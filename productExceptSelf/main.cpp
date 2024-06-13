@@ -1,35 +1,61 @@
 #include <iostream>
+#include <vector>
+#include <ranges>
+#include <algorithm>
 
 class Solution {
 public:
-    std::string mergeAlternately(std::string word1, std::string word2) {
-        std::string result = "";
-        size_t left = 0;
-        size_t right = 0;
 
-        while (left < word1.size() && right < word2.size()) {
-            result += word1[left];
-            result += word2[right];
-            left++;
-            right++;
-        }
-        if (left >= word1.size()) {
-            for (size_t i = right; i < word2.size(); i++) {
-                result += word2[i];
+    std::vector<int> productExceptSelf(std::vector<int>& nums) {
+        std::vector<int> results;
+        results.reserve(nums.size());
+
+        std::vector<int> pre;
+        pre.reserve(nums.size());
+
+
+        std::vector<int> post;
+        post.reserve(nums.size());
+
+        for (int i = 0; i < nums.size(); i++) {
+            if (i == 0) pre.push_back(nums[i]);
+            else {
+                pre.push_back(pre[i - 1] * nums[i]);
             }
         }
-        else {
-            for (size_t i = left; i < word1.size(); i++) {
-                result += word1[i];
+
+        int j = 0;
+        for (int i = nums.size() - 1; i >= 0; i--) {
+            if (i == nums.size() - 1) post.push_back(nums[i]);
+            else {
+                post.push_back(post[j] * nums[i]);
+                j++;
             }
         }
-        return result;
+        for (int i = 0; i < nums.size(); i++) {
+            if (i == 0) {
+                results.push_back(1 * (*(post.rbegin() + 1)));
+            }
+            else if (i == nums.size() - 1) {
+                results.push_back(pre[i - 1] * 1);
+            }
+            else {
+                results.push_back(pre[i - 1] * (*(post.rbegin() + i + 1)));
+            }
+        }
+
+        return results;
     }
 };
 
 int main() {
+
     Solution sol;
-    std::cout << sol.mergeAlternately("ab", "pqrs") << std::endl;
+
+    std::vector<int> nums = { -1,1,0,-3,3 };
+    for (const auto& val : sol.productExceptSelf(nums)) {
+        std::cout << val << " ";
+    }
 
     return 0;
 }

@@ -45,21 +45,21 @@ public:
                         if (stc.back() < 0) {
                             stc.push_back(asteroids[i]);
                             break;
-                            // if positive, control flow
                         }
+                        // if positive, control flow
                         else if (stc.back() > 0) {
                             int ast = std::abs(asteroids[i]);
 
-                            // if greater than |asteroids[i| return
+                            // if greater than |asteroids[i]| return
                             if (stc.back() > ast) {
                                 break;
-                                // equal, pop back and return
                             }
+                            // equal, pop back and return
                             else if (stc.back() == ast) {
                                 stc.pop_back();
                                 break;
-                                // if less, pop back
                             }
+                            // if less, pop back
                             else if (stc.back() < ast) {
                                 stc.pop_back();
                             }
