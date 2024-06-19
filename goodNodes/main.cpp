@@ -20,22 +20,25 @@ public:
 			return 0;
 		else if (root->left == nullptr && root->right == nullptr)
 			return 1;
-		
-		int max = root->val;
-		int nodes = 0;
 
-		return helper(root->left, max, nodes) + helper(root->right, max, nodes) + 1;
+		int max = root->val;
+		int curr = 1;
+		helper(root->left, max, curr);
+		helper(root->right, max, curr);
+		
+		return curr;
 	}
 private:
-	int helper(TreeNode* root, int max, int curr) {
+	void helper(TreeNode* root, int max, int& curr) {
 		if (root == nullptr)
-			return curr;
+			return;
 		
 		if (root->val >= max) {
 			curr++;
 			max = root->val;
 		}
-		return helper(root->left, max, curr) + helper(root->right, max, curr);
+		helper(root->left, max, curr);
+		helper(root->right, max, curr);
 	}
 };
 
